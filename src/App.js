@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import './App.css';
 import Counter from './components/Countet';
+import PostForm from './components/PostForm';
 import PostItem from './components/PostItem';
 import PostList from './components/PostList';
 import MyButton from './components/UI/button/MyButton';
@@ -14,39 +15,16 @@ function App() {
         { id: 3, title: 'Javascript3', body: 'Description' },
     ]);
 
-    const [title, setTitle] = useState('');
-    const [body, setBody] = useState('');
-
-    const addNewPost = (e) => {
-        e.preventDefault();
-        const newPost = {
-            id: Date.now(),
-            title,
-            body,
-        };
-        console.log(newPost);
+    const createPost = (newPost) => {
         setPosts([...posts, newPost]);
-        setTitle('');
-        setBody('');
+    };
+
+    const removePost = (post) => {
+        setPosts(posts.filter((p) => p.id !== post.id));
     };
     return (
         <div className='App'>
-            <form>
-                <MyInput
-                    type='text'
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder='Заголовок'
-                />
-                <MyInput
-                    type='text'
-                    value={body}
-                    onChange={(e) => setBody(e.target.value)}
-                    placeholder='Описание поста'
-                />
-
-                <MyButton onClick={addNewPost}>Отправить</MyButton>
-            </form>
+            <PostForm create={createPost} remove={removePost} />
             <br />
             <PostList posts={posts} title={'Список постов1'} />
         </div>
